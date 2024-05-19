@@ -26,7 +26,8 @@ public class DbFile {
 		super();
 
 	    final long length = file.length();
-	    byte[] prev =null;
+	    boolean isFirst = true;
+	    byte[] buffer = new byte[65535];
 	    int prevLength = 0;
 		try(RandomAccessFile randomAccessFile = new RandomAccessFile(file, "r")) {
 			MappedByteBuffer in = randomAccessFile
@@ -40,36 +41,34 @@ public class DbFile {
 				} else if (offset > 0x80) {
 					offset = (~offset) & 0xff;
 				}
-				
+
+				final int start = prevLength + offset;
+				int index = start;
 				int beginning = in.position();
 				int b;
 				while(((b = in.get())) != 0 ) {
+					index ++;
 				}
 				int last = in.position();
 				
 				in.position(beginning);
 				int size = last - beginning - 1;
-				byte[] buff = new byte[size];
-				in.get(buff	);
-				int start = prevLength + offset;
-				byte[] concatenated  = new byte[size + start];
-				if (prev != null) {
-					System.arraycopy(prev, 0, concatenated, 0, start);
-				}
-				System.arraycopy(buff, 0, concatenated, start, size);
-				buff = concatenated;
+				byte[] add = new byte[size];
+				in.get(add	);
+				System.arraycopy(add, 0, buffer, start, size);
+				byte[] buff = buffer;
 				prevLength  = start;
-				String value = new String(buff);
+				String value = new String(buff, 0, size + start);
 				
-				System.out.println(value);
+				//System.out.println((size+start) + "\t" + index + "\t"+ value);
 				in.position(last);
 				
-				if (prev == null) {
+				if (isFirst) {
 					if (offset != 0 || !value.equals(MAGIC_NUMBER)) {
 						throw new IllegalFIleFormatException("Illegal magic number");
 					}
+					isFirst = false;
 				}
-				prev = buff;
 			}
 		}
 	}
