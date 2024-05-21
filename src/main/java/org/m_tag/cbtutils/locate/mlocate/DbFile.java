@@ -17,22 +17,22 @@ import org.m_tag.cbtutils.Visitor;
  */
 public class DbFile {
 
+	private static final int BUFFER_UNIT_SIZE = 256;
+
 	private static final String MAGIC_NUMBER = "LOCATE02";
 
 	private final File file;
 
+	private int lastBufferSize = BUFFER_UNIT_SIZE;
+	
 	/**
 	 * コンストラクタ
 	 * 
 	 * @param file mlocate.dbファイル
-	 * @throws IOException
-	 * @throws FileNotFoundException
-	 * @throws IllegalFIleFormatException
 	 */
-	public DbFile(final File file) throws IllegalFIleFormatException, FileNotFoundException, IOException {
+	public DbFile(final File file)  {
 		super();
 		this.file = file;
-
 	}
 
 	/**
@@ -43,10 +43,10 @@ public class DbFile {
 	 * @throws FileNotFoundException
 	 */
 	public void find(Visitor visitor) 
-			throws IOException, IllegalFIleFormatException, FileNotFoundException {
+			throws IOException, IllegalFIleFormatException {
 		final long length = file.length();
 		boolean isFirst = true;
-		byte[] buffer = new byte[65535];
+		byte[] buffer = new byte[lastBufferSize];
 		int start = 0;
 		try (RandomAccessFile randomAccessFile = new RandomAccessFile(file, "r")) {
 			MappedByteBuffer in = randomAccessFile.getChannel().map(FileChannel.MapMode.READ_ONLY, 0, length);
@@ -67,7 +67,13 @@ public class DbFile {
 				int index = start;
 				// read filename
 				int b;
-				while (((b = in.get())) != 0) {
+				while ((b = in.get()) != 0) {
+					if (index >= buffer.length) {
+						// extend buffer
+						byte[] newBuffer = new byte[buffer.length + BUFFER_UNIT_SIZE];
+						System.arraycopy(buffer, 0, newBuffer, 0, buffer.length);
+						buffer = newBuffer;
+					}
 					buffer[index++] = (byte) b;
 				}
 				String fileName = new String(buffer, 0, index);
@@ -77,11 +83,13 @@ public class DbFile {
 						throw new IllegalFIleFormatException("Illegal magic number");
 					}
 					isFirst = false;
-				} else {
-					// check
-					visitor.visit(fileName);
-				}
+					continue;
+				} 
+				// check
+				visitor.visit(fileName);
 			}
+			// keep last buffer size for this db file to init buffer with the size in next find.
+			lastBufferSize = buffer.length;
 		}
 	}
 }
