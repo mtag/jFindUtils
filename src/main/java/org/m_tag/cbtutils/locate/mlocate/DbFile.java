@@ -6,9 +6,7 @@ import java.io.IOException;
 import java.io.RandomAccessFile;
 import java.nio.MappedByteBuffer;
 import java.nio.channels.FileChannel;
-import java.util.HashMap;
-import java.util.Map;
-
+import org.m_tag.cbtutils.IllegalFIleFormatException;
 import org.m_tag.cbtutils.visitor.Visitor;
 
 /**

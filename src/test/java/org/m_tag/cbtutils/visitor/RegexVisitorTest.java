@@ -4,8 +4,8 @@ import java.io.File;
 import java.io.IOException;
 import java.util.regex.Matcher;
 
+import org.m_tag.cbtutils.IllegalFIleFormatException;
 import org.m_tag.cbtutils.locate.mlocate.DbFile;
-import org.m_tag.cbtutils.locate.mlocate.IllegalFIleFormatException;
 
 public class RegexVisitorTest {
 
