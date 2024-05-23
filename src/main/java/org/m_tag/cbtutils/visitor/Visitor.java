@@ -1,5 +1,7 @@
 package org.m_tag.cbtutils.visitor;
 
+import java.io.File;
+
 /**
  * File visitor.
  */
@@ -14,5 +16,5 @@ public interface Visitor {
 	 * @param fileName fileName
 	 * @return true:accepted , false :not accepted
 	 */
-	boolean visit(final String fileName);
+	boolean visit(final File fileName);
 }

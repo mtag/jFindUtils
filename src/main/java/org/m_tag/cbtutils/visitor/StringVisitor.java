@@ -1,5 +1,7 @@
 package org.m_tag.cbtutils.visitor;
 
+import java.io.File;
+
 /**
  * search file with string.
  */
@@ -46,13 +48,13 @@ public class StringVisitor implements Visitor {
 	 * @param fileName found filename
 	 * @return true:accepted, false:not accepted
 	 */
-	public boolean found(final String fileName) {
+	public boolean found(final File fileName) {
 		return true;
 	}
 
 	@Override
-	public boolean visit(final String fileName) {
-		String name = fileName;
+	public boolean visit(final File fileName) {
+		String name = fileName.getAbsolutePath();
 		if (ignoreCase) {
 			name = name.toUpperCase();
 		}

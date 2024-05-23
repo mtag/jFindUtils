@@ -112,7 +112,7 @@ public class DbFile {
 						}
 					}
 				}
-				visitor.visit(replaced);
+				visitor.visit(new File(replaced));
 			}
 			// keep last buffer size for this db file to init buffer with the size in next find.
 			lastBufferSize = buffer.length;
