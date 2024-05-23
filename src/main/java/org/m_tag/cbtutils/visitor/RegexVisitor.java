@@ -1,12 +1,7 @@
 package org.m_tag.cbtutils.visitor;
 
-import java.io.File;
-import java.io.IOException;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
-
-import org.m_tag.cbtutils.locate.mlocate.DbFile;
-import org.m_tag.cbtutils.locate.mlocate.IllegalFIleFormatException;
 
 /**
  * search file with regular expression.
@@ -62,26 +57,5 @@ public class RegexVisitor implements Visitor {
 			return found(fileName, matcher);
 		}
 		return false;
-	}
-
-	/**
-	 * for testing.
-	 * 
-	 * @param args
-	 */
-	public static void main(String[] args) {
-		try {
-			Visitor visitor = new RegexVisitor("^.*[.]rar$", true) {
-				@Override
-				public boolean found(final String fileName, final Matcher matcher) {
-					System.out.println(fileName);
-					return true;
-				}
-			};
-			DbFile file = new DbFile(new File("Y:\\.db\\y.db"));
-			file.find(visitor);
-		} catch (IllegalFIleFormatException | IOException e) {
-			e.printStackTrace();
-		}
 	}
 }
