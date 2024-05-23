@@ -1,4 +1,4 @@
-package org.m_tag.cbtutils;
+package org.m_tag.cbtutils.visitor;
 
 import java.io.File;
 import java.io.IOException;
