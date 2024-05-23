@@ -6,8 +6,10 @@ import java.io.IOException;
 import java.io.RandomAccessFile;
 import java.nio.MappedByteBuffer;
 import java.nio.channels.FileChannel;
+import java.util.HashMap;
+import java.util.Map;
 
-import org.m_tag.cbtutils.Visitor;
+import org.m_tag.cbtutils.visitor.Visitor;
 
 /**
  * locate(findutils) DBファイル.
@@ -22,19 +24,35 @@ public class DbFile {
 	private static final String MAGIC_NUMBER = "LOCATE02";
 
 	private final File file;
+	
+	private final String[][] replacements;
 
 	private int lastBufferSize = BUFFER_UNIT_SIZE;
 	
 	/**
-	 * コンストラクタ
+	 * constructor.
 	 * 
-	 * @param file mlocate.dbファイル
+	 * @param file locate.db file
 	 */
 	public DbFile(final File file)  {
-		super();
-		this.file = file;
+		this(file, null);
 	}
 
+	/**
+	 * constructor
+	 * 
+	 * @param file locate.db file
+	 */
+	public DbFile(final File file, final String[][] replacements)  {
+		this.file = file;
+		this.replacements = replacements;
+		for(String[] entry : replacements) {
+			if (entry.length != 2) {
+				throw new IllegalArgumentException("values must be array of array[2]");
+			}
+		}
+	}
+	
 	/**
 	 * Execute find.
 	 * @param visitor 
@@ -86,7 +104,15 @@ public class DbFile {
 					continue;
 				} 
 				// check
-				visitor.visit(fileName);
+				String replaced = fileName;
+				if (replacements != null) {
+					for(String[] entry : replacements) {
+						if (replaced.startsWith(entry[0])) {
+							replaced = entry[1] + replaced.substring(entry[0].length());
+						}
+					}
+				}
+				visitor.visit(replaced);
 			}
 			// keep last buffer size for this db file to init buffer with the size in next find.
 			lastBufferSize = buffer.length;
