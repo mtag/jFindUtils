@@ -45,7 +45,7 @@ public class StringVisitor extends Visitor {
 		this.searchValue = ignoreCase ? finding.toUpperCase() : finding;
 	}
 
-
+	@Override
 	protected boolean check(final File fileName, Acceptor acceptor) {
 		String name = fileName.getAbsolutePath();
 		if (ignoreCase) {
