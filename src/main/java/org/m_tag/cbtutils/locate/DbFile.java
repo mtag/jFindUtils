@@ -1,4 +1,4 @@
-package org.m_tag.cbtutils.locate.mlocate;
+package org.m_tag.cbtutils.locate;
 
 import java.io.File;
 import java.io.FileNotFoundException;
