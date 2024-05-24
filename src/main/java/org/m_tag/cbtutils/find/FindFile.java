@@ -9,6 +9,10 @@ import org.m_tag.cbtutils.IllegalFIleFormatException;
 import org.m_tag.cbtutils.acceptor.Acceptor;
 import org.m_tag.cbtutils.visitor.Visitor;
 
+/**
+ * Find files from file systems.
+ * @author mtag@m-tag.org
+ */
 public class FindFile implements Finder {
 	private final File root;
 	public FindFile(final String root) {

@@ -2,9 +2,10 @@ package org.m_tag.cbtutils.visitor;
 
 import java.io.File;
 import java.io.IOException;
-import java.util.regex.Matcher;
 
 import org.m_tag.cbtutils.IllegalFIleFormatException;
+import org.m_tag.cbtutils.acceptor.Acceptor;
+import org.m_tag.cbtutils.acceptor.ConsoleAcceptor;
 import org.m_tag.cbtutils.locate.DbFile;
 
 public class RegexVisitorTest {
@@ -16,18 +17,13 @@ public class RegexVisitorTest {
 	 */
 	public static void main(String[] args) {
 		try {
-			Visitor visitor = new RegexVisitor("^.*[.]rar$", true) {
-				@Override
-				public boolean found(final File fileName) {
-					System.out.println(fileName);
-					return true;
-				}
-			};
-			DbFile file = new DbFile(new File("Y:\\.db\\y.db"),
+			final Visitor visitor = new RegexVisitor("^.*[.]rar$", true);
+			final Acceptor acceptor = new ConsoleAcceptor();
+			final DbFile file = new DbFile(new File("Y:\\.db\\y.db"),
 					new String[][] {
 						new String[] {"/data16/", "/home/mtag/y/"}
 					});
-			file.find(visitor, null);
+			file.find(visitor, acceptor);
 		} catch (IllegalFIleFormatException | IOException e) {
 			e.printStackTrace();
 		}

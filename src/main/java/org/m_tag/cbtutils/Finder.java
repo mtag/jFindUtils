@@ -7,7 +7,6 @@ import org.m_tag.cbtutils.acceptor.Acceptor;
 import org.m_tag.cbtutils.visitor.Visitor;
 
 public interface Finder {
-
 	/**
 	 * Execute find.
 	 * @param visitor 
