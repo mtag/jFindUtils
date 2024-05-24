@@ -12,5 +12,5 @@ public abstract class Acceptor {
 	 * @param fileName found filename
 	 * @return true:accepted, false:not accepted
 	 */
-	public abstract boolean accept(final File fileName);
+	public abstract boolean accept(final File file);
 }

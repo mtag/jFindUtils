@@ -3,7 +3,7 @@ package org.m_tag.cbtutils.acceptor;
 import java.io.File;
 
 /**
- * basic acceptor to dump file names to console.
+ * list acceptor to list file names to console like `ls -l'.
  * @author mtag@m-tag.org
  *
  */
@@ -13,8 +13,9 @@ public class ConsoleAcceptor extends Acceptor {
 	 */
 	public static final Acceptor CONSOLE_ACCEPTOR = new ConsoleAcceptor();
 	
-	public boolean accept(final File fileName) {
-		System.out.println(fileName);
+	public boolean accept(final File file) {
+		System.out.println(file);
 		return true;
+
 	}
 }
