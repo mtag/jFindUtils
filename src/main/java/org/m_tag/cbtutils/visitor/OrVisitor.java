@@ -19,5 +19,4 @@ public class OrVisitor extends Visitor {
 		}
 		return false;
 	}
-
 }

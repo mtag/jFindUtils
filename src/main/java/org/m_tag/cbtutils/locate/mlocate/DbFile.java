@@ -10,7 +10,7 @@ import org.m_tag.cbtutils.IllegalFIleFormatException;
 import org.m_tag.cbtutils.visitor.Visitor;
 
 /**
- * locate(findutils) DBファイル.
+ * locate(findutils) DB file.
  * 
  * @see <a href=
  *      "https://www.gnu.org/software/findutils/manual/html_node/find_html/LOCATE02-Database-Format.html">LOCATE02 Database Format</a>
@@ -68,15 +68,7 @@ public class DbFile {
 			MappedByteBuffer in = randomAccessFile.getChannel().map(FileChannel.MapMode.READ_ONLY, 0, length);
 
 			while (in.position() < length) {
-				// read offset
-				int offset = in.get();
-				if (offset == -128) {
-					// large offset
-					offset = in.getShort();
-				} else if (offset > 0x80) {
-					// minus
-					offset = (~offset) & 0xff;
-				}
+				int offset = readOffset(in);
 				// offset
 				start += offset;
 
@@ -85,10 +77,7 @@ public class DbFile {
 				int b;
 				while ((b = in.get()) != 0) {
 					if (index >= buffer.length) {
-						// extend buffer
-						byte[] newBuffer = new byte[buffer.length + BUFFER_UNIT_SIZE];
-						System.arraycopy(buffer, 0, newBuffer, 0, buffer.length);
-						buffer = newBuffer;
+						buffer = extendBuffer(buffer);
 					}
 					buffer[index++] = (byte) b;
 				}
@@ -102,18 +91,55 @@ public class DbFile {
 					continue;
 				} 
 				// check
-				String replaced = fileName;
-				if (replacements != null) {
-					for(String[] entry : replacements) {
-						if (replaced.startsWith(entry[0])) {
-							replaced = entry[1] + replaced.substring(entry[0].length());
-						}
-					}
-				}
-				visitor.visit(new File(replaced));
+				visitor.visit(new File(replace(fileName)));
 			}
 			// keep last buffer size for this db file to init buffer with the size in next find.
 			lastBufferSize = buffer.length;
 		}
+	}
+
+	/**
+	 * Read offset from top of buffer.
+	 * @param in buffer
+	 * @return offset from last beginning of path.
+	 */
+	private int readOffset(final MappedByteBuffer in) {
+		int offset = in.get();
+		if (offset == -128) {
+			// large offset
+			offset = in.getShort();
+		} else if (offset > 0x80) {
+			// minus
+			offset = (~offset) & 0xff;
+		}
+		return offset;
+	}
+
+	/**
+	 * replace pathnames.
+	 * @param fileName originalFileName
+	 * @return replaced fileName with replacements
+	 */
+	private String replace(final String fileName) {
+		if (replacements != null) {
+			for(String[] entry : replacements) {
+				if (fileName.startsWith(entry[0])) {
+					return entry[1] + fileName.substring(entry[0].length());
+				}
+			}
+		}
+		return fileName;
+	}
+
+	/**
+	 * extends buffer size.
+	 * @param buffer original buffer
+	 * @return extended buffer
+	 */
+	private byte[] extendBuffer(byte[] buffer) {
+		// extend buffer
+		byte[] newBuffer = new byte[buffer.length + BUFFER_UNIT_SIZE];
+		System.arraycopy(buffer, 0, newBuffer, 0, buffer.length);
+		return newBuffer;
 	}
 }
