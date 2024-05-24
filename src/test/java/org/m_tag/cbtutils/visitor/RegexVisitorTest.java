@@ -27,7 +27,7 @@ public class RegexVisitorTest {
 					new String[][] {
 						new String[] {"/data16/", "/home/mtag/y/"}
 					});
-			file.find(visitor);
+			file.find(visitor, null);
 		} catch (IllegalFIleFormatException | IOException e) {
 			e.printStackTrace();
 		}

@@ -2,6 +2,8 @@ package org.m_tag.cbtutils.visitor;
 
 import java.io.File;
 
+import org.m_tag.cbtutils.acceptor.Acceptor;
+
 /**
  * File visitor.
  */
@@ -22,12 +24,13 @@ public abstract class Visitor {
 	/**
 	 * visit in visitor pattern.
 	 * @param fileName fileName
+	 * @param acceptor TODO
 	 * @return true:accepted , false :not accepted
 	 */
-	public boolean visit(final File fileName) {
-		final boolean result = check(fileName);
+	public boolean visit(final File fileName, Acceptor acceptor) {
+		final boolean result = check(fileName, acceptor);
 		if (result) {
-			return found(fileName);
+			return acceptor.accept(fileName);
 		}
 		return false;
 	}
@@ -42,5 +45,5 @@ public abstract class Visitor {
 	}
 	
 
-	protected abstract boolean check(final File fileName);
+	protected abstract boolean check(final File fileName, Acceptor acceptor);
 }

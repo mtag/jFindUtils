@@ -6,7 +6,10 @@ import java.io.IOException;
 import java.io.RandomAccessFile;
 import java.nio.MappedByteBuffer;
 import java.nio.channels.FileChannel;
+
+import org.m_tag.cbtutils.Finder;
 import org.m_tag.cbtutils.IllegalFIleFormatException;
+import org.m_tag.cbtutils.acceptor.Acceptor;
 import org.m_tag.cbtutils.visitor.Visitor;
 
 /**
@@ -15,7 +18,7 @@ import org.m_tag.cbtutils.visitor.Visitor;
  * @see <a href=
  *      "https://www.gnu.org/software/findutils/manual/html_node/find_html/LOCATE02-Database-Format.html">LOCATE02 Database Format</a>
  */
-public class DbFile {
+public class DbFile implements Finder{
 
 	private static final int BUFFER_UNIT_SIZE = 256;
 
@@ -54,11 +57,12 @@ public class DbFile {
 	/**
 	 * Execute find.
 	 * @param visitor 
+	 * @param acceptor TODO
 	 * @throws IOException
 	 * @throws IllegalFIleFormatException
 	 * @throws FileNotFoundException
 	 */
-	public void find(Visitor visitor) 
+	public void find(final Visitor visitor, final Acceptor acceptor) 
 			throws IOException, IllegalFIleFormatException {
 		final long length = file.length();
 		boolean isFirst = true;
@@ -91,7 +95,7 @@ public class DbFile {
 					continue;
 				} 
 				// check
-				visitor.visit(new File(replace(fileName)));
+				visitor.visit(new File(replace(fileName)), acceptor);
 			}
 			// keep last buffer size for this db file to init buffer with the size in next find.
 			lastBufferSize = buffer.length;

@@ -4,10 +4,12 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 
+import org.m_tag.cbtutils.Finder;
 import org.m_tag.cbtutils.IllegalFIleFormatException;
+import org.m_tag.cbtutils.acceptor.Acceptor;
 import org.m_tag.cbtutils.visitor.Visitor;
 
-public class FindFile {
+public class FindFile implements Finder {
 	private final File root;
 	public FindFile(final String root) {
 		this(new File(root));
@@ -24,27 +26,28 @@ public class FindFile {
 	 * @throws IllegalFIleFormatException
 	 * @throws FileNotFoundException
 	 */
-	public void find(Visitor visitor) 
+	public void find(final Visitor visitor, final Acceptor acceptor) 
 			throws IOException, IllegalFIleFormatException {
-		find(visitor, root);
+		find(visitor, acceptor, root);
 	}
 	
 	/**
 	 * Execute find.
 	 * @param visitor 
+	 * @param acceptor TODO
 	 * @throws IOException
 	 * @throws IllegalFIleFormatException
 	 * @throws FileNotFoundException
 	 */
-	public void find(Visitor visitor, File file) 
+	private void find(final Visitor visitor, final Acceptor acceptor, final File file) 
 			throws IOException, IllegalFIleFormatException {
 		if (file.exists()) {
-			visitor.visit(file);
+			visitor.visit(file, acceptor);
 			if (file.isDirectory()) {
 				final File[] files = file.listFiles();
 				if (files != null) {
 					for(File child : files) {
-						find(visitor, child);
+						find(visitor, acceptor, child);
 					}
 				}
 			}
