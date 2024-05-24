@@ -15,14 +15,14 @@ public class StringVisitorTest {
 	 */
 	public static void main(String[] args) {
 		try {
-			Visitor visitor = new StringVisitor("zip", true) {
+			Visitor visitor = new OrVisitor(new StringVisitor("java", true)) {
 				@Override
 				public boolean found(final File fileName) {
 					System.out.println(fileName);
 					return true;
 				}
 			};
-			FindFile file = new FindFile("c:\\Users\\mtag");
+			FindFile file = new FindFile(".");
 			file.find(visitor);
 		} catch (IllegalFIleFormatException | IOException e) {
 			e.printStackTrace();

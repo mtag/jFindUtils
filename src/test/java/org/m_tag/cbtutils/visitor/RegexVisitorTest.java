@@ -18,7 +18,7 @@ public class RegexVisitorTest {
 		try {
 			Visitor visitor = new RegexVisitor("^.*[.]rar$", true) {
 				@Override
-				public boolean found(final File fileName, final Matcher matcher) {
+				public boolean found(final File fileName) {
 					System.out.println(fileName);
 					return true;
 				}

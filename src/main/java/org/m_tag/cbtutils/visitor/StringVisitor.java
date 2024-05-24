@@ -5,7 +5,7 @@ import java.io.File;
 /**
  * search file with string.
  */
-public class StringVisitor implements Visitor {
+public class StringVisitor extends Visitor {
 	/**
 	 * original searching string.
 	 */
@@ -28,7 +28,7 @@ public class StringVisitor implements Visitor {
 	 * @param finding searching string.
 	 */
 	public StringVisitor(final String finding) {
-		this(finding, Visitor.CASE_SENSITIVE_DEFAULT);
+		this(finding, isCaseSensitive());
 	}
 
 	/**
@@ -43,24 +43,12 @@ public class StringVisitor implements Visitor {
 		this.searchValue = ignoreCase ? finding.toUpperCase() : finding;
 	}
 
-	/**
-	 * method for visit in visitor pattern.
-	 * @param fileName found filename
-	 * @return true:accepted, false:not accepted
-	 */
-	public boolean found(final File fileName) {
-		return true;
-	}
 
-	@Override
-	public boolean visit(final File fileName) {
+	protected boolean check(final File fileName) {
 		String name = fileName.getAbsolutePath();
 		if (ignoreCase) {
 			name = name.toUpperCase();
 		}
-		if (name.contains(searchValue)) {
-			return found(fileName);
-		}
-		return false;
+		return name.contains(searchValue);
 	}
 }

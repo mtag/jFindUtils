@@ -7,7 +7,7 @@ import java.util.regex.Pattern;
 /**
  * search file with regular expression.
  */
-public class RegexVisitor implements Visitor {
+public class RegexVisitor extends Visitor {
 	/**
 	 * search with regular expression..
 	 */
@@ -20,7 +20,7 @@ public class RegexVisitor implements Visitor {
 	 * @param regex search pattern
 	 */
 	public RegexVisitor(final String regex) {
-		this(regex, CASE_SENSITIVE_DEFAULT);
+		this(regex, isCaseSensitive());
 	}
 
 	/**
@@ -41,22 +41,10 @@ public class RegexVisitor implements Visitor {
 		this.pattern = pattern;
 	}
 
-	/**
-	 * method for visit in visitor pattern.
-	 * @param fileName found filename
-	 * @param matcher matched result.
-	 * @return true:accepted, false:not accepted
-	 */
-	public boolean found(final File fileName, final Matcher matcher) {
-		return true;
-	}
 
 	@Override
-	public boolean visit(final File fileName) {
+	protected boolean check(final File fileName) {
 		final Matcher matcher = pattern.matcher(fileName.getAbsolutePath());
-		if (matcher.matches()) {
-			return found(fileName, matcher);
-		}
-		return false;
+		return matcher.matches();
 	}
 }
