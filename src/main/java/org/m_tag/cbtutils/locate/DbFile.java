@@ -57,7 +57,7 @@ public class DbFile implements Finder{
 	/**
 	 * Execute find.
 	 * @param visitor 
-	 * @param acceptor TODO
+	 * @param acceptor accepts targeted file name
 	 * @throws IOException
 	 * @throws IllegalFIleFormatException
 	 * @throws FileNotFoundException

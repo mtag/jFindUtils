@@ -24,7 +24,7 @@ public abstract class Visitor {
 	/**
 	 * visit in visitor pattern.
 	 * @param fileName fileName
-	 * @param acceptor TODO
+	 * @param acceptor accepts targeted file name
 	 * @return true:accepted , false :not accepted
 	 */
 	public boolean visit(final File fileName, Acceptor acceptor) {

@@ -10,7 +10,7 @@ public interface Finder {
 	/**
 	 * Execute find.
 	 * @param visitor 
-	 * @param acceptor TODO
+	 * @param root root folder to find
 	 * @throws IOException
 	 * @throws IllegalFIleFormatException
 	 * @throws FileNotFoundException

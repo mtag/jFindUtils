@@ -1,11 +1,9 @@
 package org.m_tag.cbtutils.find;
 
 import java.io.File;
-import java.io.FileNotFoundException;
 import java.io.IOException;
 
 import org.m_tag.cbtutils.Finder;
-import org.m_tag.cbtutils.IllegalFIleFormatException;
 import org.m_tag.cbtutils.acceptor.Acceptor;
 import org.m_tag.cbtutils.visitor.Visitor;
 
@@ -15,9 +13,17 @@ import org.m_tag.cbtutils.visitor.Visitor;
  */
 public class FindFile implements Finder {
 	private final File root;
+	/**
+	 * constructor
+	 * @param root root folder to find
+	 */
 	public FindFile(final String root) {
 		this(new File(root));
 	}
+	/**
+	 * constructor 
+	 * @param root root folder to findb
+	 */
 	public FindFile(final File root) {
 		super();
 		this.root = root;
@@ -25,26 +31,23 @@ public class FindFile implements Finder {
 
 	/**
 	 * Execute find.
-	 * @param visitor 
-	 * @throws IOException
-	 * @throws IllegalFIleFormatException
-	 * @throws FileNotFoundException
+	 * @param visitor file name checker whether it is target or not.
+	 * @param acceptor accepts targeted file name
+	 * @throws IOException read error in finding
 	 */
 	public void find(final Visitor visitor, final Acceptor acceptor) 
-			throws IOException, IllegalFIleFormatException {
+			throws IOException {
 		find(visitor, acceptor, root);
 	}
 	
 	/**
 	 * Execute find.
 	 * @param visitor 
-	 * @param acceptor TODO
+	 * @param acceptor accepts targeted file name
 	 * @throws IOException
-	 * @throws IllegalFIleFormatException
-	 * @throws FileNotFoundException
 	 */
 	private void find(final Visitor visitor, final Acceptor acceptor, final File file) 
-			throws IOException, IllegalFIleFormatException {
+			throws IOException {
 		if (file.exists()) {
 			visitor.visit(file, acceptor);
 			if (file.isDirectory()) {
