@@ -1,6 +1,6 @@
 package org.m_tag.cbtutils.visitor;
 
-import java.io.File;
+import java.nio.file.Path;
 
 import org.m_tag.cbtutils.acceptor.Acceptor;
 
@@ -13,7 +13,7 @@ public class NotVisitor extends Visitor {
 	}
 
 	@Override
-	protected boolean check(final File fileName, Acceptor acceptor) {
-		return !condition.check(fileName, acceptor);
+	protected boolean check(final Path path, Acceptor acceptor) {
+		return !condition.check(path, acceptor);
 	}
 }

@@ -1,6 +1,6 @@
 package org.m_tag.cbtutils.visitor;
 
-import java.io.File;
+import java.nio.file.Path;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -45,8 +45,8 @@ public class RegexVisitor extends Visitor {
 
 
 	@Override
-	protected boolean check(final File fileName, Acceptor acceptor) {
-		final Matcher matcher = pattern.matcher(fileName.getAbsolutePath());
+	protected boolean check(final Path path, Acceptor acceptor) {
+		final Matcher matcher = pattern.matcher(path.getFileName().toString());
 		return matcher.matches();
 	}
 }

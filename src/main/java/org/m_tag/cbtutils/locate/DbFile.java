@@ -6,6 +6,8 @@ import java.io.IOException;
 import java.io.RandomAccessFile;
 import java.nio.MappedByteBuffer;
 import java.nio.channels.FileChannel;
+import java.nio.file.Files;
+import java.nio.file.Path;
 
 import org.m_tag.cbtutils.Finder;
 import org.m_tag.cbtutils.IllegalFIleFormatException;
@@ -24,28 +26,35 @@ public class DbFile implements Finder{
 
 	private static final String MAGIC_NUMBER = "LOCATE02";
 
-	private final File file;
+	private final Path path;
 	
 	private final String[][] replacements;
 
 	private int lastBufferSize = BUFFER_UNIT_SIZE;
-	
 	/**
 	 * constructor.
 	 * 
 	 * @param file locate.db file
 	 */
-	public DbFile(final File file)  {
-		this(file, null);
+	public DbFile(final String  fileName, final String[]... replacements)  {
+		this(Path.of(fileName), replacements);
 	}
+	/**
+	 * constructor.
+	 * 
+	 * @param file locate.db file
+	 */
+	public DbFile(final File file, final String[]... replacements)  {
+		this(file.toPath(), replacements);
+	}	
 
 	/**
 	 * constructor
 	 * 
 	 * @param file locate.db file
 	 */
-	public DbFile(final File file, final String[][] replacements)  {
-		this.file = file;
+	public DbFile(final Path path, final String[]... replacements)  {
+		this.path = path;
 		this.replacements = replacements;
 		for(String[] entry : replacements) {
 			if (entry.length != 2) {
@@ -64,11 +73,11 @@ public class DbFile implements Finder{
 	 */
 	public void find(final Visitor visitor, final Acceptor acceptor) 
 			throws IOException, IllegalFIleFormatException {
-		final long length = file.length();
+		final long length = Files.size(path);
 		boolean isFirst = true;
 		byte[] buffer = new byte[lastBufferSize];
 		int start = 0;
-		try (RandomAccessFile randomAccessFile = new RandomAccessFile(file, "r")) {
+		try (RandomAccessFile randomAccessFile = new RandomAccessFile(path.toFile(), "r")) {
 			MappedByteBuffer in = randomAccessFile.getChannel().map(FileChannel.MapMode.READ_ONLY, 0, length);
 
 			while (in.position() < length) {
@@ -95,7 +104,7 @@ public class DbFile implements Finder{
 					continue;
 				} 
 				// check
-				visitor.visit(new File(replace(fileName)), acceptor);
+				visitor.visit(Path.of(replace(fileName)), acceptor);
 			}
 			// keep last buffer size for this db file to init buffer with the size in next find.
 			lastBufferSize = buffer.length;

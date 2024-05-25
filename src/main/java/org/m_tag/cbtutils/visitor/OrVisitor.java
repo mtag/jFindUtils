@@ -1,6 +1,6 @@
 package org.m_tag.cbtutils.visitor;
 
-import java.io.File;
+import java.nio.file.Path;
 
 import org.m_tag.cbtutils.acceptor.Acceptor;
 
@@ -13,9 +13,9 @@ public class OrVisitor extends Visitor {
 	}
 
 	@Override
-	protected boolean check(final File fileName, Acceptor acceptor) {
+	protected boolean check(final Path path, Acceptor acceptor) {
 		for(Visitor condition : conditions) {
-			if (condition.visit(fileName, acceptor)) {
+			if (condition.visit(path, acceptor)) {
 				return true;
 			}
 		}

@@ -1,6 +1,6 @@
 package org.m_tag.cbtutils.acceptor;
 
-import java.io.File;
+import java.nio.file.Path;
 
 /**
  * list acceptor to list file names to console like `ls -l'.
@@ -13,8 +13,8 @@ public class ConsoleAcceptor extends Acceptor {
 	 */
 	public static final Acceptor CONSOLE_ACCEPTOR = new ConsoleAcceptor();
 	
-	public boolean accept(final File file) {
-		System.out.println(file);
+	public boolean accept(final Path path) {
+		System.out.println(path);
 		return true;
 
 	}

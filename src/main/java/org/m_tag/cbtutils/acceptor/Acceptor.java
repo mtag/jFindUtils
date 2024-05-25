@@ -1,6 +1,6 @@
 package org.m_tag.cbtutils.acceptor;
 
-import java.io.File;
+import java.nio.file.Path;
 
 /**
  * Accepting results of find files.
@@ -9,8 +9,8 @@ import java.io.File;
 public abstract class Acceptor {
 	/**
 	 * method for visit in visitor pattern.
-	 * @param fileName found filename
+	 * @param path path of found file
 	 * @return true:accepted, false:not accepted
 	 */
-	public abstract boolean accept(final File file);
+	public abstract boolean accept(final Path path);
 }
