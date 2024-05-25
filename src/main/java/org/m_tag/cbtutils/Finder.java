@@ -17,7 +17,7 @@ public abstract class Finder {
 	 * @throws IllegalFIleFormatException
 	 * @throws FileNotFoundException
 	 */
-	public abstract void find(final Visitor visitor, final LinkedHashSet<Path> set) 
+	protected abstract void find(final Visitor visitor, final LinkedHashSet<Path> set) 
 			throws IOException, IllegalFIleFormatException;
 	
 	public Stream<Path> stream(final Visitor visitor) throws IOException, IllegalFIleFormatException {

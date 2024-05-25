@@ -37,7 +37,7 @@ public class FindFile extends Finder {
 	 * @param acceptor accepts targeted Path name
 	 * @throws IOException read error in finding
 	 */
-	public void find(final Visitor visitor, final LinkedHashSet<Path> set) 
+	protected void find(final Visitor visitor, final LinkedHashSet<Path> set) 
 			throws IOException {
 		find(visitor, set, root);
 	}

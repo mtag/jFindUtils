@@ -71,7 +71,7 @@ public class DbFile extends Finder{
 	 * @throws IllegalFIleFormatException
 	 * @throws FileNotFoundException
 	 */
-	public void find(final Visitor visitor, final LinkedHashSet<Path> set) 
+	protected void find(final Visitor visitor, final LinkedHashSet<Path> set) 
 			throws IOException, IllegalFIleFormatException {
 		final long length = Files.size(path);
 		boolean isFirst = true;
