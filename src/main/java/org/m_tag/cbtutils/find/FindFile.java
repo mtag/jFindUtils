@@ -2,18 +2,18 @@ package org.m_tag.cbtutils.find;
 
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.util.LinkedHashSet;
 import java.util.stream.Stream;
 import java.io.IOException;
 
 import org.m_tag.cbtutils.Finder;
-import org.m_tag.cbtutils.acceptor.Acceptor;
 import org.m_tag.cbtutils.visitor.Visitor;
 
 /**
  * Find Paths from Path systems.
  * @author mtag@m-tag.org
  */
-public class FindFile implements Finder {
+public class FindFile extends Finder {
 	private final Path root;
 	/**
 	 * constructor
@@ -37,9 +37,9 @@ public class FindFile implements Finder {
 	 * @param acceptor accepts targeted Path name
 	 * @throws IOException read error in finding
 	 */
-	public void find(final Visitor visitor, final Acceptor acceptor) 
+	public void find(final Visitor visitor, final LinkedHashSet<Path> set) 
 			throws IOException {
-		find(visitor, acceptor, root);
+		find(visitor, set, root);
 	}
 
 	
@@ -49,15 +49,18 @@ public class FindFile implements Finder {
 	 * @param acceptor accepts targeted Path name
 	 * @throws IOException
 	 */
-	private void find(final Visitor visitor, final Acceptor acceptor, final Path path) 
+	private void find(final Visitor visitor, final LinkedHashSet<Path> set, final Path path) 
 			throws IOException {
 		if (Files.exists(path)) {
-			visitor.visit(path, acceptor);
+			if (visitor.check(path)) {
+				set.add(path);
+			}
+			set.add(path);
 			if (Files.isDirectory(path)) {
 				try(final Stream<Path> list = Files.list(path)){
 					list.forEach(child -> {
 						try {
-							find(visitor, acceptor, child);
+							find(visitor, set, child);
 						} catch(IOException ex) {
 							throw new RuntimeException(ex);
 						}

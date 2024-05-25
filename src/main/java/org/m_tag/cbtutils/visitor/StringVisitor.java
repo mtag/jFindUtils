@@ -2,8 +2,6 @@ package org.m_tag.cbtutils.visitor;
 
 import java.nio.file.Path;
 
-import org.m_tag.cbtutils.acceptor.Acceptor;
-
 /**
  * search file with string.
  */
@@ -46,7 +44,7 @@ public class StringVisitor extends Visitor {
 	}
 
 	@Override
-	protected boolean check(final Path path, Acceptor acceptor) {
+	public boolean check(final Path path) {
 		String name = path.getFileName().toString();
 		if (ignoreCase) {
 			name = name.toUpperCase();

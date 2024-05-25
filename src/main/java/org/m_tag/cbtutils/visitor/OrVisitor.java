@@ -2,7 +2,6 @@ package org.m_tag.cbtutils.visitor;
 
 import java.nio.file.Path;
 
-import org.m_tag.cbtutils.acceptor.Acceptor;
 
 public class OrVisitor extends Visitor {
 	private Visitor[] conditions;
@@ -13,9 +12,9 @@ public class OrVisitor extends Visitor {
 	}
 
 	@Override
-	protected boolean check(final Path path, Acceptor acceptor) {
+	public boolean check(final Path path) {
 		for(Visitor condition : conditions) {
-			if (condition.visit(path, acceptor)) {
+			if (condition.check(path)) {
 				return true;
 			}
 		}

@@ -8,10 +8,10 @@ import java.nio.MappedByteBuffer;
 import java.nio.channels.FileChannel;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.util.LinkedHashSet;
 
 import org.m_tag.cbtutils.Finder;
 import org.m_tag.cbtutils.IllegalFIleFormatException;
-import org.m_tag.cbtutils.acceptor.Acceptor;
 import org.m_tag.cbtutils.visitor.Visitor;
 
 /**
@@ -20,7 +20,7 @@ import org.m_tag.cbtutils.visitor.Visitor;
  * @see <a href=
  *      "https://www.gnu.org/software/findutils/manual/html_node/find_html/LOCATE02-Database-Format.html">LOCATE02 Database Format</a>
  */
-public class DbFile implements Finder{
+public class DbFile extends Finder{
 
 	private static final int BUFFER_UNIT_SIZE = 256;
 
@@ -71,7 +71,7 @@ public class DbFile implements Finder{
 	 * @throws IllegalFIleFormatException
 	 * @throws FileNotFoundException
 	 */
-	public void find(final Visitor visitor, final Acceptor acceptor) 
+	public void find(final Visitor visitor, final LinkedHashSet<Path> set) 
 			throws IOException, IllegalFIleFormatException {
 		final long length = Files.size(path);
 		boolean isFirst = true;
@@ -104,7 +104,10 @@ public class DbFile implements Finder{
 					continue;
 				} 
 				// check
-				visitor.visit(Path.of(replace(fileName)), acceptor);
+				final Path newPath = Path.of(replace(fileName));
+				if (visitor.check(newPath)) {
+					set.add(newPath);
+				}
 			}
 			// keep last buffer size for this db file to init buffer with the size in next find.
 			lastBufferSize = buffer.length;

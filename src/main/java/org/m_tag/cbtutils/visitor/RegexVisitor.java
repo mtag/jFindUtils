@@ -4,8 +4,6 @@ import java.nio.file.Path;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import org.m_tag.cbtutils.acceptor.Acceptor;
-
 /**
  * search file with regular expression.
  */
@@ -45,7 +43,7 @@ public class RegexVisitor extends Visitor {
 
 
 	@Override
-	protected boolean check(final Path path, Acceptor acceptor) {
+	public boolean check(final Path path) {
 		final Matcher matcher = pattern.matcher(path.getFileName().toString());
 		return matcher.matches();
 	}

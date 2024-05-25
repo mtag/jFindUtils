@@ -3,7 +3,6 @@ package org.m_tag.cbtutils.visitor;
 import java.io.IOException;
 
 import org.m_tag.cbtutils.IllegalFIleFormatException;
-import org.m_tag.cbtutils.acceptor.ListAcceptor;
 import org.m_tag.cbtutils.locate.DbFile;
 
 public class RegexVisitorTest {
@@ -20,7 +19,7 @@ public class RegexVisitorTest {
 					new String[][] {
 						new String[] {"/data16/", "/home/mtag/y/"}
 					});
-			file.find(visitor, ListAcceptor.LIST_ACCEPTOR);
+			file.stream(visitor).forEach(path -> System.out.println(path));
 		} catch (IllegalFIleFormatException | IOException e) {
 			e.printStackTrace();
 		}
