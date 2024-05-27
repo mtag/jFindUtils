@@ -14,10 +14,11 @@ public class FindFileIteratorTest {
 	@Test
 	void success() {
 		String[] files = {
-				"./src/main/java/org/m_tag/cbtutils/find/DirectoryReadingException.java",
-				"./src/main/java/org/m_tag/cbtutils/find/FindFileIterator.java",
-				"./src/main/java/org/m_tag/cbtutils/FindIterator.java",
-				"./src/main/java/org/m_tag/cbtutils/locate/DbFileIterator.java",
+				"./src/main/java/org/m_tag/jfindutils/FilterMethods.java",
+				"./src/main/java/org/m_tag/jfindutils/find/DirectoryReadingException.java",
+				"./src/main/java/org/m_tag/jfindutils/find/FindFileIterator.java",
+				"./src/main/java/org/m_tag/jfindutils/FindIterator.java",
+				"./src/main/java/org/m_tag/jfindutils/locate/DbFileIterator.java",
 		};
 		final Iterator<String> expected = Arrays.asList(files).iterator();
 		final Stream<String> stream = new FindFileIterator("./src/main/").stream()
