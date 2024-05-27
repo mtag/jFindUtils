@@ -1,4 +1,4 @@
-package org.m_tag.cbtutils;
+package org.m_tag.jfindutils;
 
 import java.nio.file.Path;
 import java.util.Iterator;

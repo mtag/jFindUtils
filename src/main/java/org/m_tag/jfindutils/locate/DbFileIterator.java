@@ -1,4 +1,4 @@
-package org.m_tag.cbtutils.locate;
+package org.m_tag.jfindutils.locate;
 
 import java.io.Closeable;
 import java.io.File;
@@ -10,7 +10,7 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.NoSuchElementException;
 
-import org.m_tag.cbtutils.FindIterator;
+import org.m_tag.jfindutils.FindIterator;
 
 /**
  * locate(findutils) DB file Iterator

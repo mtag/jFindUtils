@@ -1,4 +1,4 @@
-package org.m_tag.cbtutils.find;
+package org.m_tag.jfindutils.find;
 
 import static org.junit.Assert.assertTrue;
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -8,7 +8,8 @@ import java.util.Iterator;
 import java.util.stream.Stream;
 
 import org.junit.jupiter.api.Test;
-import org.m_tag.cbtutils.FindIterator;
+import org.m_tag.jfindutils.FindIterator;
+import org.m_tag.jfindutils.find.FindFileIterator;
 
 public class FindFileIteratorTest {
 	@Test

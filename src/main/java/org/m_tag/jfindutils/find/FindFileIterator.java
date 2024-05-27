@@ -1,4 +1,4 @@
-package org.m_tag.cbtutils.find;
+package org.m_tag.jfindutils.find;
 
 import java.io.File;
 import java.io.IOException;
@@ -10,7 +10,7 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.stream.Stream;
 
-import org.m_tag.cbtutils.FindIterator;
+import org.m_tag.jfindutils.FindIterator;
 
 /**
  * Iterator for files and directories(including sub directories) in path. 

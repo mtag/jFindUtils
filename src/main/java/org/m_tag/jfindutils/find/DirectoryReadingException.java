@@ -1,4 +1,4 @@
-package org.m_tag.cbtutils.find;
+package org.m_tag.jfindutils.find;
 
 public class DirectoryReadingException extends RuntimeException {
 
