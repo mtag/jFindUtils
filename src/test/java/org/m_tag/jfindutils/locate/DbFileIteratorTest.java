@@ -8,8 +8,7 @@ import java.nio.file.Path;
 import java.util.Iterator;
 
 import org.junit.jupiter.api.Test;
-import org.m_tag.jfindutils.FindIterator;
-import org.m_tag.jfindutils.locate.DbFileIterator;
+import static org.m_tag.jfindutils.FilterMethods.checkFileExtention;
 
 public class DbFileIteratorTest {
 	/***
@@ -42,7 +41,7 @@ public class DbFileIteratorTest {
 		try (final DbFileIterator file = new DbFileIterator("Y:\\.db\\y.db",
 				new String[][] { new String[] { "/data16/", "/home/mtag/y/" } })) {
 			file.stream()
-				.filter(path->FindIterator.checkFileExtention(path, "java"))
+				.filter(path->checkFileExtention(path, "java"))
 				.forEach(path -> System.out.println(path));
 		}
 	}

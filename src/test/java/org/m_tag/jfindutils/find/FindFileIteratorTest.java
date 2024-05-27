@@ -8,8 +8,7 @@ import java.util.Iterator;
 import java.util.stream.Stream;
 
 import org.junit.jupiter.api.Test;
-import org.m_tag.jfindutils.FindIterator;
-import org.m_tag.jfindutils.find.FindFileIterator;
+import static org.m_tag.jfindutils.FilterMethods.checkFileExtention;
 
 public class FindFileIteratorTest {
 	@Test
@@ -22,7 +21,7 @@ public class FindFileIteratorTest {
 		};
 		final Iterator<String> expected = Arrays.asList(files).iterator();
 		final Stream<String> stream = new FindFileIterator("./src/main/").stream()
-				.filter(path->FindIterator.checkFileExtention(path, "java"))
+				.filter(path->checkFileExtention(path, "java"))
 				.map(path -> path.toString().replace('\\', '/'));
 		final Iterator<String> results = stream.toList().iterator();
 		
@@ -42,7 +41,7 @@ public class FindFileIteratorTest {
 	 */
 	public static void main(String[] args) {
 		final FindFileIterator file = new FindFileIterator(".");
-		file.stream().filter(path -> FindIterator.checkFileExtention(path, "java"))
+		file.stream().filter(path -> checkFileExtention(path, "java"))
 				.forEach(path -> System.out.println(path));
 	}
 
