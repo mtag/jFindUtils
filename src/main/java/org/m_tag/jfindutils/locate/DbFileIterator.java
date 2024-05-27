@@ -64,6 +64,7 @@ public class DbFileIterator extends FindIterator implements Closeable {
    * constructor.
    *
    * @param path locate.db file
+   * @param replacements name replacements for filenames
    */
   public DbFileIterator(final Path path, final String[]... replacements) throws IOException {
     super();
@@ -88,6 +89,7 @@ public class DbFileIterator extends FindIterator implements Closeable {
    * constructor.
    *
    * @param fileName locate.db file
+   * @param replacements name replacements for filenames
    */
   public DbFileIterator(final String fileName, final String[]... replacements) throws IOException {
     this(Path.of(fileName), replacements);
@@ -104,7 +106,7 @@ public class DbFileIterator extends FindIterator implements Closeable {
    * @param buffer original buffer
    * @return extended buffer
    */
-  private void extendBuffer(byte[] buffer) {
+  private void extendBuffer() {
     // extend buffer
     byte[] newBuffer = new byte[buffer.length + BUFFER_UNIT_SIZE];
     System.arraycopy(buffer, 0, newBuffer, 0, buffer.length);
@@ -130,7 +132,7 @@ public class DbFileIterator extends FindIterator implements Closeable {
     int b;
     while ((b = in.get()) != 0) {
       if (index >= buffer.length) {
-        extendBuffer(buffer);
+        extendBuffer();
       }
       buffer[index++] = (byte) b;
     }

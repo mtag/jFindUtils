@@ -54,7 +54,7 @@ public class FindFileIterator extends FindIterator {
     this.brothers = null;
     this.prev = root;
     if (!Files.isDirectory(root)) {
-      throw new DirectoryReadingException(String.format("%s is not director.", root));
+      throw new IllegalArgumentException(String.format("%s is not director.", root));
     }
     // next value on calling next()
     this.current = null;

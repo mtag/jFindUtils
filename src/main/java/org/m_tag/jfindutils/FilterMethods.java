@@ -16,6 +16,13 @@ public final class FilterMethods {
     super();
   }
 
+  /** 
+   * check file extension in stream to filter the stream.
+   *
+   * @param path found path
+   * @param extension checking extension
+   * @return true:matched the extension
+   */
   public static boolean checkFileExtention(Path path, String extension) {
     return checkFileExtention(path, extension, true);
   }
