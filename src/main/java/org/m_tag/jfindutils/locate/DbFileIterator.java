@@ -34,10 +34,6 @@ public class DbFileIterator extends FindIterator implements Closeable {
 	 */
 	private MappedByteBuffer in;
 	/**
-	 * initial buffer size for buffer.
-	 */
-	private int lastBufferSize = BUFFER_UNIT_SIZE;
-	/**
 	 * size of db file.
 	 */
 	private final long length;	
@@ -76,7 +72,7 @@ public class DbFileIterator extends FindIterator implements Closeable {
 			}
 		}	
 		this.length = Files.size(path);
-		buffer = new byte[lastBufferSize];
+		buffer = new byte[BUFFER_UNIT_SIZE];
 		start = 0;
 		this.randomAccessFile = new RandomAccessFile(path.toFile(), "r");
 		this.in = randomAccessFile.getChannel().map(FileChannel.MapMode.READ_ONLY, 0, length);
@@ -103,11 +99,11 @@ public class DbFileIterator extends FindIterator implements Closeable {
 	 * @param buffer original buffer
 	 * @return extended buffer
 	 */
-	private byte[] extendBuffer(byte[] buffer) {
+	private void extendBuffer(byte[] buffer) {
 		// extend buffer
 		byte[] newBuffer = new byte[buffer.length + BUFFER_UNIT_SIZE];
 		System.arraycopy(buffer, 0, newBuffer, 0, buffer.length);
-		return newBuffer;
+		this.buffer = newBuffer;
 	}
 	@Override
 	public boolean hasNext() {
@@ -127,7 +123,7 @@ public class DbFileIterator extends FindIterator implements Closeable {
 		int b;
 		while ((b = in.get()) != 0) {
 			if (index >= buffer.length) {
-				buffer = extendBuffer(buffer);
+				extendBuffer(buffer);
 			}
 			buffer[index++] = (byte) b;
 		}
