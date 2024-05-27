@@ -1,8 +1,38 @@
 package org.m_tag.cbtutils.find;
 
+import static org.junit.Assert.assertTrue;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+
+import java.util.Arrays;
+import java.util.Iterator;
+import java.util.stream.Stream;
+
+import org.junit.jupiter.api.Test;
 import org.m_tag.cbtutils.FindIterator;
 
 public class FindFileIteratorTest {
+	@Test
+	void success() {
+		String[] files = {
+				"./src/main/java/org/m_tag/cbtutils/find/DirectoryReadingException.java",
+				"./src/main/java/org/m_tag/cbtutils/find/FindFileIterator.java",
+				"./src/main/java/org/m_tag/cbtutils/FindIterator.java",
+				"./src/main/java/org/m_tag/cbtutils/locate/DbFileIterator.java",
+		};
+		final Iterator<String> expected = Arrays.asList(files).iterator();
+		final Stream<String> stream = new FindFileIterator("./src/main/").stream()
+				.filter(path->FindIterator.checkFileExtention(path, "java"))
+				.map(path -> path.toString().replace('\\', '/'));
+		final Iterator<String> results = stream.toList().iterator();
+		
+		while(expected.hasNext()) {
+			String line = expected.next();
+			System.out.println(line);
+			assertTrue(results.hasNext());
+			String path = results.next();
+			assertEquals(line, path.toString());
+		}
+	}
 
 	/**
 	 * for testing.
@@ -10,12 +40,9 @@ public class FindFileIteratorTest {
 	 * @param args
 	 */
 	public static void main(String[] args) {
-		//final Visitor visitor = new OrVisitor(new StringVisitor("java", true));
 		final FindFileIterator file = new FindFileIterator(".");
-		//file.stream().filter(path -> path.getFileName().endsWith("java")).forEach(path -> System.out.println(path));
-		file.stream()
-			.filter(path->FindIterator.checkFileExtention(path, "java"))
-			.forEach(path -> System.out.println(path));
+		file.stream().filter(path -> FindIterator.checkFileExtention(path, "java"))
+				.forEach(path -> System.out.println(path));
 	}
 
 }
