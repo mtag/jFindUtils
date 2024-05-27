@@ -54,7 +54,7 @@ public class FindFileIterator  extends FindIterator  {
 		this.brothers = null;
 		this.prev = root;
 		if (!Files.isDirectory(root)) {
-			throw new RuntimeException(String.format("%s is not director.", root));
+			throw new DirectoryReadingException(String.format("%s is not director.", root));
 		}
 		//  next value on calling next()
 		this.current = null;
@@ -103,7 +103,8 @@ public class FindFileIterator  extends FindIterator  {
 				 brothers =  list.iterator();
 			}
 		} catch(IOException ex) {
-			throw new RuntimeException(ex);
+			throw new DirectoryReadingException(
+					String.format("Error in reading directory:%s", folder.toString()), ex);
 		}
 	}
 	@Override
