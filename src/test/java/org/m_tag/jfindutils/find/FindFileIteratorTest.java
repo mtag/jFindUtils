@@ -2,6 +2,9 @@ package org.m_tag.jfindutils.find;
 
 import static org.junit.Assert.assertTrue;
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.m_tag.jfindutils.FilterMethods.exists;
+import static org.m_tag.jfindutils.FilterMethods.isDirectory;
+import static org.m_tag.jfindutils.FilterMethods.checkSize;
 import static org.m_tag.jfindutils.FilterMethods.checkFileExtention;
 
 import java.util.Arrays;
@@ -23,8 +26,12 @@ public class FindFileIteratorTest {
         "./src/main/java/org/m_tag/jfindutils/FindIterator.java",
         "./src/main/java/org/m_tag/jfindutils/locate/DbFileIterator.java"};
     final Iterator<String> expected = Arrays.asList(files).iterator();
+    
     final Stream<String> stream = new FindFileIterator("./src/main/").stream()
         .filter(path -> checkFileExtention(path, "java"))
+        .filter(path -> !isDirectory(path))
+        .filter(path -> checkSize(path, 1, 1))
+        .filter(path -> exists(path))
         .map(path -> path.toString().replace('\\', '/'));
     final Iterator<String> results = stream.toList().iterator();
 

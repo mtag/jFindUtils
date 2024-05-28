@@ -2,12 +2,14 @@ package org.m_tag.jfindutils.find;
 
 import java.io.IOException;
 
+import org.m_tag.jfindutils.ReadingException;
+
 /**
  * Runtime Exception on reading files and folders from file system.
  *
  * @author mtag@m-tag.org
  */
-public class DirectoryReadingException extends RuntimeException {
+public class DirectoryReadingException extends ReadingException  {
   /**
    * generated serial.
    */
