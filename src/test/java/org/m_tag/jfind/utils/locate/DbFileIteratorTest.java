@@ -2,6 +2,7 @@ package org.m_tag.jfind.utils.locate;
 
 import static org.junit.Assert.assertTrue;
 import static org.m_tag.jfind.utils.FilterMethods.checkFileExtention;
+
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -15,9 +16,10 @@ import org.junit.jupiter.api.Test;
  */
 public class DbFileIteratorTest {
   /**
-   * to update test.db : 
-   * 
-   *    updatedb --localpaths=/home/mtag/eclipse-workspace/jFindUtils/src/main --output=src/test/resources/test.db
+   * to update test.db.
+   *
+   * updatedb --localpaths=/home/mtag/eclipse-workspace/jFindUtils/src/main
+   * --output=src/test/resources/test.db
    *
    * @throws IOException raised at failed to open or read db file.
    */
