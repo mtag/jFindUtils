@@ -1,8 +1,7 @@
-package org.m_tag.jfindutils.locate;
+package org.m_tag.jfind.utils.locate;
 
 import static org.junit.Assert.assertTrue;
-import static org.m_tag.jfindutils.FilterMethods.checkFileExtention;
-
+import static org.m_tag.jfind.utils.FilterMethods.checkFileExtention;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -16,20 +15,21 @@ import org.junit.jupiter.api.Test;
  */
 public class DbFileIteratorTest {
   /**
-   * to update test.db : ` updatedb --localpaths=/home/mtag/eclipse-jit/jFindUtils/src/main
-   * --output=src/test/resources/test.db`
+   * to update test.db : 
+   * 
+   *    updatedb --localpaths=/home/mtag/eclipse-workspace/jFindUtils/src/main --output=src/test/resources/test.db
    *
    * @throws IOException raised at failed to open or read db file.
    */
   @Test
   void success() throws IOException {
     try (final DbFileIterator target = new DbFileIterator("./src/test/resources/test.db",
-        new String[] {"/home/mtag/eclipse-jit/jFindUtils/", "./"})) {
+        new String[] {"/home/mtag/eclipse-workspace/jFindUtils/", "./"})) {
       final Iterator<Path> results = target.stream().toList().iterator();
 
       while (results.hasNext()) {
         Path path = results.next();
-        System.out.println(path.toString());
+        System.out.println(path.toString() + ':' + Files.exists(path));
         assertTrue(Files.exists(path));
       }
     }

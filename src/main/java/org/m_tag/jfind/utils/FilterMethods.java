@@ -1,8 +1,9 @@
-package org.m_tag.jfindutils;
+package org.m_tag.jfind.utils;
 
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import org.m_tag.jfind.ReadingException;
 
 /**
  * Static methods to filter the Stream.

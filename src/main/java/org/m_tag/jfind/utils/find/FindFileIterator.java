@@ -1,4 +1,4 @@
-package org.m_tag.jfindutils.find;
+package org.m_tag.jfind.utils.find;
 
 import java.io.File;
 import java.io.IOException;
@@ -9,7 +9,7 @@ import java.util.Deque;
 import java.util.Iterator;
 import java.util.List;
 import java.util.stream.Stream;
-import org.m_tag.jfindutils.FindIterator;
+import org.m_tag.jfind.utils.FindIterator;
 
 /**
  * Iterator for files and directories(including sub directories) in path.

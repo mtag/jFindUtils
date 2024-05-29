@@ -1,4 +1,4 @@
-package org.m_tag.jfindutils;
+package org.m_tag.jfind.utils;
 
 import org.junit.runner.RunWith;
 import org.junit.runners.Suite;
@@ -10,7 +10,7 @@ import org.junit.runners.Suite.SuiteClasses;
  * @author mtag@m-tag.org
  */
 @RunWith(Suite.class)
-@SuiteClasses({org.m_tag.jfindutils.find.FindFileIteratorTest.class,
-    org.m_tag.jfindutils.locate.DbFileIteratorTest.class})
+@SuiteClasses({org.m_tag.jfind.utils.find.FindFileIteratorTest.class,
+    org.m_tag.jfind.utils.locate.DbFileIteratorTest.class})
 public class TestSuit {
 }

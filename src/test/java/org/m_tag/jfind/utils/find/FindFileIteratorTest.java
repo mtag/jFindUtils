@@ -1,17 +1,15 @@
-package org.m_tag.jfindutils.find;
+package org.m_tag.jfind.utils.find;
 
 import static org.junit.Assert.assertTrue;
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.m_tag.jfindutils.FilterMethods.exists;
-import static org.m_tag.jfindutils.FilterMethods.isDirectory;
-import static org.m_tag.jfindutils.FilterMethods.checkSize;
-import static org.m_tag.jfindutils.FilterMethods.checkFileExtention;
-
+import static org.m_tag.jfind.utils.FilterMethods.checkFileExtention;
+import static org.m_tag.jfind.utils.FilterMethods.checkSize;
+import static org.m_tag.jfind.utils.FilterMethods.exists;
+import static org.m_tag.jfind.utils.FilterMethods.isDirectory;
 import java.util.Arrays;
 import java.util.Iterator;
 import java.util.stream.Stream;
 import org.junit.jupiter.api.Test;
-
 /**
  * Test class for FindFileIterator.
  *
@@ -20,11 +18,13 @@ import org.junit.jupiter.api.Test;
 public class FindFileIteratorTest {
   @Test
   void success() {
-    String[] files = {"./src/main/java/org/m_tag/jfindutils/FilterMethods.java",
-        "./src/main/java/org/m_tag/jfindutils/find/DirectoryReadingException.java",
-        "./src/main/java/org/m_tag/jfindutils/find/FindFileIterator.java",
-        "./src/main/java/org/m_tag/jfindutils/FindIterator.java",
-        "./src/main/java/org/m_tag/jfindutils/locate/DbFileIterator.java"};
+    String[] files = {
+        "./src/main/java/org/m_tag/jfind/ReadingException.java",
+        "./src/main/java/org/m_tag/jfind/utils/FilterMethods.java",
+        "./src/main/java/org/m_tag/jfind/utils/find/DirectoryReadingException.java",
+        "./src/main/java/org/m_tag/jfind/utils/find/FindFileIterator.java",
+        "./src/main/java/org/m_tag/jfind/utils/FindIterator.java",
+        "./src/main/java/org/m_tag/jfind/utils/locate/DbFileIterator.java"};
     final Iterator<String> expected = Arrays.asList(files).iterator();
     
     final Stream<String> stream = new FindFileIterator("./src/main/").stream()
@@ -37,9 +37,9 @@ public class FindFileIteratorTest {
 
     while (expected.hasNext()) {
       String line = expected.next();
-      System.out.println(line);
       assertTrue(results.hasNext());
       String path = results.next();
+      System.out.println(line + '\t' + path.toString());
       assertEquals(line, path.toString());
     }
   }

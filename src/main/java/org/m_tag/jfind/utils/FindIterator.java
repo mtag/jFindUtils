@@ -1,4 +1,4 @@
-package org.m_tag.jfindutils;
+package org.m_tag.jfind.utils;
 
 import java.nio.file.Path;
 import java.util.Iterator;

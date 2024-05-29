@@ -1,8 +1,7 @@
-package org.m_tag.jfindutils.find;
+package org.m_tag.jfind.utils.find;
 
 import java.io.IOException;
-
-import org.m_tag.jfindutils.ReadingException;
+import org.m_tag.jfind.ReadingException;
 
 /**
  * Runtime Exception on reading files and folders from file system.

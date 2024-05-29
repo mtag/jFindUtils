@@ -1,4 +1,4 @@
-package org.m_tag.jfindutils.locate;
+package org.m_tag.jfind.utils.locate;
 
 import java.io.Closeable;
 import java.io.File;
@@ -9,7 +9,7 @@ import java.nio.channels.FileChannel;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.NoSuchElementException;
-import org.m_tag.jfindutils.FindIterator;
+import org.m_tag.jfind.utils.FindIterator;
 
 /**
  * locate(findutils) DB file Iterator.
