@@ -17,7 +17,7 @@ import org.junit.jupiter.api.Test;
 public class DbFileIteratorTest {
   /**
    * to update test.db.
-   *
+   * <p/>
    * updatedb --localpaths=/home/mtag/eclipse-workspace/jFindUtils/src/main
    * --output=src/test/resources/test.db
    *
