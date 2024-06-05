@@ -3,7 +3,7 @@ package org.m_tag.jfind.utils.locate;
 import java.io.File;
 import java.io.IOException;
 import java.nio.file.Path;
-import org.m_tag.jfind.utils.FindIterator;
+import java.security.InvalidParameterException;
 
 /**
  * db file of locate.
@@ -17,7 +17,7 @@ public class DbFile {
    * replacement for path names.
    */
   private final String[][] replacements;
-  
+
   /**
    * constructor.
    *
@@ -27,17 +27,32 @@ public class DbFile {
   public DbFile(File file, String[]... replacements) {
     this(file.toPath(), replacements);
   }
-  
+
   /**
    * constructor.
    *
-   * @param fileName db file name.
-   * @param replacements replacements.
+   * @param fileNameAndReplaces db file name and replacements.
    */
-  public DbFile(String fileName, String[]... replacements) {
-    this(Path.of(fileName), replacements);
+  public DbFile(String fileNameAndReplaces) {
+    super();
+    final String[] pathAndReplace = fileNameAndReplaces.split(File.pathSeparator);
+    if (pathAndReplace.length % 2 != 1) {
+      throw new InvalidParameterException(
+          "illegal path format for locate db:" + fileNameAndReplaces);
+    }
+    this.path = Path.of(pathAndReplace[0]);
+    if (!path.toFile().exists()) {
+      throw new InvalidParameterException("db file doesn't exists:" + fileNameAndReplaces);
+    }
+    this.replacements = new String[(pathAndReplace.length - 1) / 2][];
+    
+    for (int i = 0, j = 1; i < replacements.length; i++) {
+      this.replacements[i] = new String[2];
+      this.replacements[i][0] = pathAndReplace[j++];
+      this.replacements[i][1] = pathAndReplace[j++];
+    }
   }
-  
+
   /**
    * constructor.
    *
@@ -49,7 +64,7 @@ public class DbFile {
     this.path = path;
     this.replacements = replacements;
   }
-  
+
   /**
    * getter for db file path.
    *
@@ -58,16 +73,16 @@ public class DbFile {
   public Path getPath() {
     return path;
   }
-  
+
   /**
-   * getter for  replacement for path names.
+   * getter for replacement for path names.
    *
-   * @return  replacement for path names.
+   * @return replacement for path names.
    */
   public String[][] getReplacements() {
     return replacements;
   }
-  
+
   /**
    * replace pathnames.
    *
@@ -84,7 +99,7 @@ public class DbFile {
     }
     return fileName;
   }
-  
+
   public DbFileIterator iterator() throws IOException {
     return new DbFileIterator(this);
   }

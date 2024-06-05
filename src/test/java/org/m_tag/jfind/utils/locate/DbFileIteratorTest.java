@@ -3,6 +3,7 @@ package org.m_tag.jfind.utils.locate;
 import static org.junit.Assert.assertTrue;
 import static org.m_tag.jfind.utils.FilterMethods.checkFileExtention;
 
+import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -25,8 +26,10 @@ public class DbFileIteratorTest {
    */
   @Test
   void success() throws IOException {
-    DbFile file = new DbFile("./src/test/resources/test.db",
-        new String[] {"/home/mtag/eclipse-workspace/jFindUtils/", "./"});
+    DbFile file = new DbFile(
+        "./src/test/resources/test.db" 
+            + File.pathSeparator + "/home/mtag/eclipse-workspace/jFindUtils/" 
+            + File.pathSeparator + "./");
     try (final DbFileIterator target = file.iterator()) {
       final Iterator<Path> results = target.stream().toList().iterator();
 
@@ -46,8 +49,8 @@ public class DbFileIteratorTest {
    */
   public static void main(String[] args) throws IOException {
     // final Visitor visitor = new RegexVisitor("^.*[.]rar$", true);
-    DbFile file = new DbFile("Y:\\.db\\y.db",
-        new String[][] {new String[] {"/data16/", "/home/mtag/y/"}});
+    DbFile file = new DbFile(
+        "./src/test/resources/test.db;/home/mtag/eclipse-workspace/jFindUtils/;./");
     try (final DbFileIterator itetator = file.iterator()) {
       itetator.stream().filter(path -> checkFileExtention(path, "java"))
           .forEach(path -> System.out.println(path));
