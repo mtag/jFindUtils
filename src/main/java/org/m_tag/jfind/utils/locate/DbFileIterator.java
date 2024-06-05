@@ -1,7 +1,6 @@
 package org.m_tag.jfind.utils.locate;
 
 import java.io.Closeable;
-import java.io.File;
 import java.io.IOException;
 import java.io.RandomAccessFile;
 import java.nio.MappedByteBuffer;
@@ -103,7 +102,7 @@ class DbFileIterator extends FindIterator implements Closeable {
     if (!hasNext()) {
       throw new NoSuchElementException("beyond the endof db file.");
     }
-    int offset = readOffset(in);
+    final int offset = readOffset(in);
     // offset
     start += offset;
 
@@ -116,7 +115,7 @@ class DbFileIterator extends FindIterator implements Closeable {
       }
       buffer[index++] = (byte) b;
     }
-    String fileName = new String(buffer, 0, index);
+    final String fileName = new String(buffer, 0, index);
     return Path.of(file.replace(fileName));
   }
 
