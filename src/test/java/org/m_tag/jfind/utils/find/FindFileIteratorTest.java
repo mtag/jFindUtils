@@ -25,6 +25,7 @@ public class FindFileIteratorTest {
         "./src/main/java/org/m_tag/jfind/utils/find/DirectoryReadingException.java",
         "./src/main/java/org/m_tag/jfind/utils/find/FindFileIterator.java",
         "./src/main/java/org/m_tag/jfind/utils/FindIterator.java",
+        "./src/main/java/org/m_tag/jfind/utils/locate/DbFile.java",
         "./src/main/java/org/m_tag/jfind/utils/locate/DbFileIterator.java"};
     final Iterator<String> expected = Arrays.asList(files).iterator();
 
@@ -53,5 +54,4 @@ public class FindFileIteratorTest {
     file.stream().filter(path -> checkFileExtention(path, "java"))
         .forEach(path -> System.out.println(path));
   }
-
 }

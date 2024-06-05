@@ -25,8 +25,9 @@ public class DbFileIteratorTest {
    */
   @Test
   void success() throws IOException {
-    try (final DbFileIterator target = new DbFileIterator("./src/test/resources/test.db",
-        new String[] {"/home/mtag/eclipse-workspace/jFindUtils/", "./"})) {
+    DbFile file = new DbFile("./src/test/resources/test.db",
+        new String[] {"/home/mtag/eclipse-workspace/jFindUtils/", "./"});
+    try (final DbFileIterator target = file.iterator()) {
       final Iterator<Path> results = target.stream().toList().iterator();
 
       while (results.hasNext()) {
@@ -45,9 +46,10 @@ public class DbFileIteratorTest {
    */
   public static void main(String[] args) throws IOException {
     // final Visitor visitor = new RegexVisitor("^.*[.]rar$", true);
-    try (final DbFileIterator file = new DbFileIterator("Y:\\.db\\y.db",
-        new String[][] {new String[] {"/data16/", "/home/mtag/y/"}})) {
-      file.stream().filter(path -> checkFileExtention(path, "java"))
+    DbFile file = new DbFile("Y:\\.db\\y.db",
+        new String[][] {new String[] {"/data16/", "/home/mtag/y/"}});
+    try (final DbFileIterator itetator = file.iterator()) {
+      itetator.stream().filter(path -> checkFileExtention(path, "java"))
           .forEach(path -> System.out.println(path));
     }
   }

@@ -18,7 +18,7 @@ import org.m_tag.jfind.utils.FindIterator;
  *      "https://www.gnu.org/software/findutils/manual/html_node/find_html/LOCATE02-Database-Format.html">LOCATE02
  *      Database Format</a>
  */
-public class DbFileIterator extends FindIterator implements Closeable {
+class DbFileIterator extends FindIterator implements Closeable {
 
   private static final int BUFFER_UNIT_SIZE = 256;
 
@@ -32,7 +32,7 @@ public class DbFileIterator extends FindIterator implements Closeable {
   /**
    * buffer for db file.
    */
-  private MappedByteBuffer in;
+  private final MappedByteBuffer in;
   /**
    * size of db file.
    */
@@ -41,11 +41,11 @@ public class DbFileIterator extends FindIterator implements Closeable {
   /**
    * db file.
    */
-  private RandomAccessFile randomAccessFile;
+  private final RandomAccessFile randomAccessFile;
   /**
    * replacements of folder names.
    */
-  private final String[][] replacements;
+  private final DbFile file;
   /**
    * start position of string.
    */
@@ -56,43 +56,23 @@ public class DbFileIterator extends FindIterator implements Closeable {
    *
    * @param file locate.db file
    */
-  public DbFileIterator(final File file, final String[]... replacements) throws IOException {
-    this(file.toPath(), replacements);
-  }
-
-  /**
-   * constructor.
-   *
-   * @param path locate.db file
-   * @param replacements name replacements for filenames
-   */
-  public DbFileIterator(final Path path, final String[]... replacements) throws IOException {
+  DbFileIterator(final DbFile file) throws IOException {
     super();
-    this.replacements = replacements;
-    for (String[] entry : replacements) {
+    this.file = file;
+    for (String[] entry : file.getReplacements()) {
       if (entry.length != 2) {
         throw new IllegalArgumentException("values must be array of array[2]");
       }
     }
-    this.length = Files.size(path);
+    this.length = Files.size(file.getPath());
     buffer = new byte[BUFFER_UNIT_SIZE];
     start = 0;
-    this.randomAccessFile = new RandomAccessFile(path.toFile(), "r");
+    this.randomAccessFile = new RandomAccessFile(file.getPath().toFile(), "r");
     this.in = randomAccessFile.getChannel().map(FileChannel.MapMode.READ_ONLY, 0, length);
 
     if (!this.hasNext() || !this.next().toString().equals(MAGIC_NUMBER)) {
       throw new IOException("no magic number");
     }
-  }
-
-  /**
-   * constructor.
-   *
-   * @param fileName locate.db file
-   * @param replacements name replacements for filenames
-   */
-  public DbFileIterator(final String fileName, final String[]... replacements) throws IOException {
-    this(Path.of(fileName), replacements);
   }
 
   @Override
@@ -137,7 +117,7 @@ public class DbFileIterator extends FindIterator implements Closeable {
       buffer[index++] = (byte) b;
     }
     String fileName = new String(buffer, 0, index);
-    return Path.of(replace(fileName));
+    return Path.of(file.replace(fileName));
   }
 
   /**
@@ -156,22 +136,5 @@ public class DbFileIterator extends FindIterator implements Closeable {
       offset = (~offset) & 0xff;
     }
     return offset;
-  }
-
-  /**
-   * replace pathnames.
-   *
-   * @param fileName originalFileName
-   * @return replaced fileName with replacements
-   */
-  private String replace(final String fileName) {
-    if (replacements != null) {
-      for (String[] entry : replacements) {
-        if (fileName.startsWith(entry[0])) {
-          return entry[1] + fileName.substring(entry[0].length());
-        }
-      }
-    }
-    return fileName;
   }
 }
