@@ -4,6 +4,7 @@ import java.io.File;
 import java.io.IOException;
 import java.nio.file.Path;
 import java.security.InvalidParameterException;
+import java.util.stream.Stream;
 
 /**
  * db file of locate.
@@ -24,8 +25,20 @@ public class DbFile {
    * @param file db file Path.
    * @param replacements replacements.
    */
-  public DbFile(File file, String[]... replacements) {
-    this(file.toPath(), replacements);
+  public DbFile(File file, String... replacements) {
+    this(file.toPath(), splitArray(replacements, 0));
+  }
+  
+  /**
+   * constructor.
+   *
+   * @param file db file Path.
+   * @param replacements replacements.
+   */
+  public DbFile(File file, String[][] replacements) {
+    super();
+    this.path = file.toPath();
+    this.replacements = replacements;
   }
 
   /**
@@ -44,13 +57,19 @@ public class DbFile {
     if (!path.toFile().exists()) {
       throw new InvalidParameterException("db file doesn't exists:" + fileNameAndReplaces);
     }
-    this.replacements = new String[(pathAndReplace.length - 1) / 2][];
-    
-    for (int i = 0, j = 1; i < replacements.length; i++) {
-      this.replacements[i] = new String[2];
-      this.replacements[i][0] = pathAndReplace[j++];
-      this.replacements[i][1] = pathAndReplace[j++];
+    this.replacements = splitArray(pathAndReplace, 1);
+  }
+
+  private static String[][] splitArray(final String[] pathAndReplace, int j) {
+    final String[][] array = new String[(pathAndReplace.length - j) / 2][];
+    int i = 0;
+    while (i < array.length) {
+      array[i] = new String[2];
+      array[i][0] = pathAndReplace[j++];
+      array[i][1] = pathAndReplace[j++];
+      i++;
     }
+    return array;
   }
 
   /**
@@ -102,5 +121,9 @@ public class DbFile {
 
   public DbFileIterator iterator() throws IOException {
     return new DbFileIterator(this);
+  }
+
+  public Stream<Path> stream() throws IOException {
+    return iterator().stream();
   }
 }
