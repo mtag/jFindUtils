@@ -17,7 +17,7 @@ import org.m_tag.jfind.utils.FindIterator;
  *      "https://www.gnu.org/software/findutils/manual/html_node/find_html/LOCATE02-Database-Format.html">LOCATE02
  *      Database Format</a>
  */
-class DbFileIterator extends FindIterator implements Closeable {
+public class DbFileIterator extends FindIterator implements Closeable {
 
   private static final int BUFFER_UNIT_SIZE = 256;
 
