@@ -84,4 +84,8 @@ public final class FilterMethods {
     final String last = fileName.substring(pos + 1);
     return caseSensitive ? last.equals(extension) : last.equalsIgnoreCase(extension);
   }
+
+  public static boolean equalsIgnoreCase(final Path path, final String target) {
+    return path.getFileName().toString().equalsIgnoreCase(target);
+  }
 }
