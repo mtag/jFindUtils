@@ -115,7 +115,7 @@ public class DbFileIterator extends FindIterator implements Closeable {
       }
       buffer[index++] = (byte) b;
     }
-    final String fileName = new String(buffer, 0, index);
+    final String fileName = new String(buffer, 0, index, file.getCharset());
     return Path.of(file.replace(fileName));
   }
 

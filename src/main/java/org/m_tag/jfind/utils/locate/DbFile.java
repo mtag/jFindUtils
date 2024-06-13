@@ -2,6 +2,8 @@ package org.m_tag.jfind.utils.locate;
 
 import java.io.File;
 import java.io.IOException;
+import java.nio.charset.Charset;
+import java.nio.charset.StandardCharsets;
 import java.nio.file.Path;
 import java.security.InvalidParameterException;
 import java.util.stream.Stream;
@@ -10,10 +12,28 @@ import java.util.stream.Stream;
  * db file of locate.
  */
 public class DbFile {
+  private static String[][] splitArray(final String[] pathAndReplace, int j) {
+    final String[][] array = new String[(pathAndReplace.length - j) / 2][];
+    int i = 0;
+    while (i < array.length) {
+      array[i] = new String[2];
+      array[i][0] = pathAndReplace[j++];
+      array[i][1] = pathAndReplace[j++];
+      i++;
+    }
+    return array;
+  }
+  
+  /**
+   * character set in db.
+   */
+  private final Charset charset;
+  
   /**
    * file path.
    */
   private final Path path;
+
   /**
    * replacement for path names.
    */
@@ -26,7 +46,7 @@ public class DbFile {
    * @param replacements replacements.
    */
   public DbFile(File file, String... replacements) {
-    this(file.toPath(), splitArray(replacements, 0));
+    this(file.toPath(), StandardCharsets.UTF_8, splitArray(replacements, 0));
   }
   
   /**
@@ -36,9 +56,20 @@ public class DbFile {
    * @param replacements replacements.
    */
   public DbFile(File file, String[][] replacements) {
+    this(file.toPath(), StandardCharsets.UTF_8, replacements);
+  }
+
+  /**
+   * constructor.
+   *
+   * @param path db file Path.
+   * @param replacements replacements.
+   */
+  public DbFile(Path path, Charset charset, String[]... replacements) {
     super();
-    this.path = file.toPath();
+    this.path = path;
     this.replacements = replacements;
+    this.charset = charset;
   }
 
   /**
@@ -58,30 +89,11 @@ public class DbFile {
       throw new InvalidParameterException("db file doesn't exists:" + fileNameAndReplaces);
     }
     this.replacements = splitArray(pathAndReplace, 1);
+    this.charset = StandardCharsets.UTF_8;
   }
 
-  private static String[][] splitArray(final String[] pathAndReplace, int j) {
-    final String[][] array = new String[(pathAndReplace.length - j) / 2][];
-    int i = 0;
-    while (i < array.length) {
-      array[i] = new String[2];
-      array[i][0] = pathAndReplace[j++];
-      array[i][1] = pathAndReplace[j++];
-      i++;
-    }
-    return array;
-  }
-
-  /**
-   * constructor.
-   *
-   * @param path db file Path.
-   * @param replacements replacements.
-   */
-  public DbFile(Path path, String[]... replacements) {
-    super();
-    this.path = path;
-    this.replacements = replacements;
+  Charset getCharset() {
+    return charset;
   }
 
   /**
@@ -102,6 +114,10 @@ public class DbFile {
     return replacements;
   }
 
+  public DbFileIterator iterator() throws IOException {
+    return new DbFileIterator(this);
+  }
+
   /**
    * replace pathnames.
    *
@@ -117,10 +133,6 @@ public class DbFile {
       }
     }
     return fileName;
-  }
-
-  public DbFileIterator iterator() throws IOException {
-    return new DbFileIterator(this);
   }
 
   public Stream<Path> stream() throws IOException {
