@@ -25,7 +25,7 @@ public class DbFileIteratorTest {
    */
   @Test
   void success() throws IOException {
-    DbFile file = new DbFile("./src/test/resources/test.db");
+    DbFile file = new DbFile(Path.of("./src/test/resources/test.db"), "UTF-8");
     try (final DbFileIterator target = file.iterator(new String[] {
         "/home/mtag/eclipse-workspace/jFindUtils/", "./"})) {
       final Iterator<Path> results = target.stream().toList().iterator();

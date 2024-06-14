@@ -26,17 +26,8 @@ public class DbFile {
    *
    * @param fileName db file Path.
    */
-  public DbFile(String fileName) {
+  public DbFile(final String fileName) {
     this(Path.of(fileName), StandardCharsets.UTF_8);
-  }
-
-  /**
-   * constructor.
-   *
-   * @param file db file Path.
-   */
-  public DbFile(File file) {
-    this(file.toPath(), StandardCharsets.UTF_8);
   }
 
   /**
@@ -44,7 +35,7 @@ public class DbFile {
    *
    * @param path db file Path.
    */
-  public DbFile(Path path) {
+  public DbFile(final Path path) {
     this(path, StandardCharsets.UTF_8);
   }
 
@@ -52,9 +43,21 @@ public class DbFile {
    * constructor.
    *
    * @param path db file Path.
+   * @param charsetName character set name of db file.
+   */
+  public DbFile(final Path path, final String charsetName) {
+    super();
+    this.path = path;
+    this.charset = Charset.forName(charsetName);
+  }
+  
+  /**
+   * constructor.
+   *
+   * @param path db file Path.
    * @param charset character set of db file.
    */
-  public DbFile(Path path, Charset charset) {
+  public DbFile(final Path path, final Charset charset) {
     super();
     this.path = path;
     this.charset = charset;
