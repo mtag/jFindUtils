@@ -14,9 +14,20 @@ import java.util.stream.StreamSupport;
  *
  */
 public abstract class FindIterator implements Iterator<Path> {
-
-  protected FindIterator() {
+  /**
+   * replacement for path names.
+   */
+  private final String[][] replacements;
+  
+  protected FindIterator(String[]... replacements) {
     super();
+
+    this.replacements = replacements == null ? new String[0][] : replacements;
+    for (String[] entry : this.replacements) {
+      if (entry.length != 2) {
+        throw new IllegalArgumentException("values must be array of array[2]");
+      }
+    }
   }
   
   /**
@@ -28,5 +39,21 @@ public abstract class FindIterator implements Iterator<Path> {
     final Spliterator<Path> spliterator =
         Spliterators.spliteratorUnknownSize(this, Spliterator.ORDERED | Spliterator.NONNULL);
     return StreamSupport.stream(spliterator, false);
+  }
+  
+
+  /**
+   * replace pathnames.
+   *
+   * @param fileName originalFileName
+   * @return replaced fileName with replacements
+   */
+  protected String replace(final String fileName) {
+    for (String[] entry : replacements) {
+      if (fileName.startsWith(entry[0])) {
+        return entry[1] + fileName.substring(entry[0].length());
+      }
+    }
+    return fileName;
   }
 }

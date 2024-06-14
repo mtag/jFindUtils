@@ -39,8 +39,8 @@ public class FindFileIterator extends FindIterator {
    *
    * @param file root folder to find
    */
-  public FindFileIterator(final File file) {
-    this(file.toPath());
+  public FindFileIterator(final File file, String[]... replacements) {
+    this(file.toPath(), replacements);
   }
 
   /**
@@ -48,8 +48,8 @@ public class FindFileIterator extends FindIterator {
    *
    * @param root root folder to find
    */
-  public FindFileIterator(final Path root) {
-    super();
+  public FindFileIterator(final Path root, String[]... replacements) {
+    super(replacements);
     this.stack.clear();
     this.brothers = null;
     this.prev = root;

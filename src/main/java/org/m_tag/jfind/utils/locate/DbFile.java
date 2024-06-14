@@ -5,25 +5,12 @@ import java.io.IOException;
 import java.nio.charset.Charset;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Path;
-import java.security.InvalidParameterException;
 import java.util.stream.Stream;
 
 /**
  * db file of locate.
  */
 public class DbFile {
-  private static String[][] splitArray(final String[] pathAndReplace, int j) {
-    final String[][] array = new String[(pathAndReplace.length - j) / 2][];
-    int i = 0;
-    while (i < array.length) {
-      array[i] = new String[2];
-      array[i][0] = pathAndReplace[j++];
-      array[i][1] = pathAndReplace[j++];
-      i++;
-    }
-    return array;
-  }
-
   /**
    * character set in db.
    */
