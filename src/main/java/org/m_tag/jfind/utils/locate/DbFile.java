@@ -23,73 +23,54 @@ public class DbFile {
     }
     return array;
   }
-  
+
   /**
    * character set in db.
    */
   private final Charset charset;
-  
+
   /**
    * file path.
    */
   private final Path path;
 
   /**
-   * replacement for path names.
+   * constructor.
+   *
+   * @param fileName db file Path.
    */
-  private final String[][] replacements;
+  public DbFile(String fileName) {
+    this(Path.of(fileName), StandardCharsets.UTF_8);
+  }
 
   /**
    * constructor.
    *
    * @param file db file Path.
-   * @param replacements replacements.
    */
-  public DbFile(File file, String... replacements) {
-    this(file.toPath(), StandardCharsets.UTF_8, splitArray(replacements, 0));
-  }
-  
-  /**
-   * constructor.
-   *
-   * @param file db file Path.
-   * @param replacements replacements.
-   */
-  public DbFile(File file, String[][] replacements) {
-    this(file.toPath(), StandardCharsets.UTF_8, replacements);
+  public DbFile(File file) {
+    this(file.toPath(), StandardCharsets.UTF_8);
   }
 
   /**
    * constructor.
    *
    * @param path db file Path.
-   * @param replacements replacements.
    */
-  public DbFile(Path path, Charset charset, String[]... replacements) {
-    super();
-    this.path = path;
-    this.replacements = replacements;
-    this.charset = charset;
+  public DbFile(Path path) {
+    this(path, StandardCharsets.UTF_8);
   }
 
   /**
    * constructor.
    *
-   * @param fileNameAndReplaces db file name and replacements.
+   * @param path db file Path.
+   * @param charset character set of db file.
    */
-  public DbFile(String fileNameAndReplaces) {
+  public DbFile(Path path, Charset charset) {
     super();
-    final String[] pathAndReplace = fileNameAndReplaces.split(File.pathSeparator);
-    if (pathAndReplace.length % 2 != 1) {
-      throw new InvalidParameterException(
-          "illegal path format for locate db:" + fileNameAndReplaces);
-    }
-    this.path = Path.of(pathAndReplace[0]);
-    if (!path.toFile().exists()) {
-      throw new InvalidParameterException("db file doesn't exists:" + fileNameAndReplaces);
-    }
-    this.replacements = splitArray(pathAndReplace, 1);
-    this.charset = StandardCharsets.UTF_8;
+    this.path = path;
+    this.charset = charset;
   }
 
   Charset getCharset() {
@@ -106,36 +87,24 @@ public class DbFile {
   }
 
   /**
-   * getter for replacement for path names.
+   * create iterator.
    *
-   * @return replacement for path names.
+   * @param replacements replace paths
+   * @return locate iterator
+   * @throws IOException error on reading db file.
    */
-  public String[][] getReplacements() {
-    return replacements;
-  }
-
-  public DbFileIterator iterator() throws IOException {
-    return new DbFileIterator(this);
+  public DbFileIterator iterator(String[]... replacements) throws IOException {
+    return new DbFileIterator(this, replacements);
   }
 
   /**
-   * replace pathnames.
+   * create stream.
    *
-   * @param fileName originalFileName
-   * @return replaced fileName with replacements
+   * @param replacements replace paths
+   * @return locate stream
+   * @throws IOException error on reading db file.
    */
-  public String replace(final String fileName) {
-    if (replacements != null) {
-      for (String[] entry : replacements) {
-        if (fileName.startsWith(entry[0])) {
-          return entry[1] + fileName.substring(entry[0].length());
-        }
-      }
-    }
-    return fileName;
-  }
-
-  public Stream<Path> stream() throws IOException {
-    return iterator().stream();
+  public Stream<Path> stream(String[]... replacements) throws IOException {
+    return iterator(replacements).stream();
   }
 }

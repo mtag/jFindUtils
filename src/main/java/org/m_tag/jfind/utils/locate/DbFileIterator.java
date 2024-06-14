@@ -22,6 +22,11 @@ public class DbFileIterator extends FindIterator implements Closeable {
   private static final int BUFFER_UNIT_SIZE = 256;
 
   private static final String MAGIC_NUMBER = "LOCATE02";
+  
+  /**
+   * replacement for path names.
+   */
+  private final String[][] replacements;
 
   /**
    * buffer for building Sting.
@@ -55,10 +60,11 @@ public class DbFileIterator extends FindIterator implements Closeable {
    *
    * @param file locate.db file
    */
-  DbFileIterator(final DbFile file) throws IOException {
+  DbFileIterator(final DbFile file, String[]... replacements) throws IOException {
     super();
     this.file = file;
-    for (String[] entry : file.getReplacements()) {
+    this.replacements = replacements == null ? new String[0][] : replacements;
+    for (String[] entry : this.replacements) {
       if (entry.length != 2) {
         throw new IllegalArgumentException("values must be array of array[2]");
       }
@@ -116,7 +122,22 @@ public class DbFileIterator extends FindIterator implements Closeable {
       buffer[index++] = (byte) b;
     }
     final String fileName = new String(buffer, 0, index, file.getCharset());
-    return Path.of(file.replace(fileName));
+    return Path.of(replace(fileName));
+  }
+
+  /**
+   * replace pathnames.
+   *
+   * @param fileName originalFileName
+   * @return replaced fileName with replacements
+   */
+  public String replace(final String fileName) {
+    for (String[] entry : replacements) {
+      if (fileName.startsWith(entry[0])) {
+        return entry[1] + fileName.substring(entry[0].length());
+      }
+    }
+    return fileName;
   }
 
   /**
