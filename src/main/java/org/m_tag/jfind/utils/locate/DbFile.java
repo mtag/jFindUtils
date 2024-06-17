@@ -1,6 +1,5 @@
 package org.m_tag.jfind.utils.locate;
 
-import java.io.File;
 import java.io.IOException;
 import java.nio.charset.Charset;
 import java.nio.charset.StandardCharsets;
