@@ -82,7 +82,7 @@ public class DbFile {
    * @return locate iterator
    * @throws IOException error on reading db file.
    */
-  public DbFileIterator iterator(String[]... replacements) throws IOException {
+  public DbFileIterator iterator(final String[]... replacements) throws IOException {
     return new DbFileIterator(this, replacements);
   }
 
@@ -93,7 +93,7 @@ public class DbFile {
    * @return locate stream
    * @throws IOException error on reading db file.
    */
-  public Stream<Path> stream(String[]... replacements) throws IOException {
+  public Stream<Path> stream(final String[]... replacements) throws IOException {
     return iterator(replacements).stream();
   }
 }
