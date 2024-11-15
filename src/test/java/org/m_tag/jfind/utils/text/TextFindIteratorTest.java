@@ -1,6 +1,6 @@
 package org.m_tag.jfind.utils.text;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 import java.io.File;
 import java.io.IOException;
