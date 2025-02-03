@@ -4,6 +4,8 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import org.m_tag.jfind.ReadingException;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  * Static methods to filter the Stream.
@@ -11,6 +13,7 @@ import org.m_tag.jfind.ReadingException;
  * @author mtag@m-tag.org
  */
 public final class FilterMethods {
+  protected static final Logger logger = LoggerFactory.getLogger(FilterMethods.class);
 
   /**
    * hide constructor.
@@ -26,7 +29,9 @@ public final class FilterMethods {
    * @return true:exists , false:not exists
    */
   public static boolean exists(final Path path) {
-    return Files.exists(path);
+    final boolean exists = Files.exists(path);
+    logger.debug("check exists:{}:{}", exists, path);
+    return exists;
   }
 
   /**
