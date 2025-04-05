@@ -45,7 +45,6 @@ public class DbFileIteratorTest {
    * @throws IOException raised at failed to open or read db file.
    */
   public static void main(String[] args) throws IOException {
-    // final Visitor visitor = new RegexVisitor("^.*[.]rar$", true);
     DbFile file =
         new DbFile("./src/test/resources/test.db");
     
@@ -53,7 +52,7 @@ public class DbFileIteratorTest {
         "/home/mtag/eclipse-workspace/jFindUtils/", "./"
     })) {
       itetator.stream().filter(path -> checkFileExtention(path, "java"))
-          .forEach(path -> System.out.println(path));
+          .forEach(System.out::println);
     }
   }
 }

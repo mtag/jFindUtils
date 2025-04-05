@@ -38,9 +38,9 @@ public class FindFileIteratorTest {
     while (expected.hasNext()) {
       String line = expected.next();
       assertTrue(results.hasNext());
-      String path = results.next();
-      System.out.println(line + '\t' + path.toString());
-      assertEquals(line, path.toString());
+      final String path = results.next();
+      System.out.println(line + '\t' + path);
+      assertEquals(line, path);
     }
   }
 
@@ -52,6 +52,6 @@ public class FindFileIteratorTest {
   public static void main(String[] args) {
     final FindFileIterator file = new FindFileIterator(".");
     file.stream().filter(path -> checkFileExtention(path, "java"))
-        .forEach(path -> System.out.println(path));
+        .forEach(System.out::println);
   }
 }
